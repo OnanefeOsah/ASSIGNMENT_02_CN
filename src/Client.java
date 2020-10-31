@@ -56,7 +56,7 @@ public class Client extends Seeker{
                 if (str1.equals("Accept")) {
                     setJ(new Job("Fishing"));
                 }else if(str1.equals("Decline")){
-                    jobs.
+                    //jobs.
                 }
 
                 System.out.println(str1);
