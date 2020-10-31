@@ -1,11 +1,17 @@
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Client extends Seeker{
 
     static Creator c = new Creator();
+    List<String> jobslist;
+    private int check;
+    private boolean pick = false;
 
     public static void main(String args[]) throws Exception {
         Client c = new Client(new Job("null"));
@@ -22,9 +28,10 @@ public class Client extends Seeker{
             Socket s = new Socket("localhost", 4999);
             System.out.println("Connected");
             String[] jobs = c.getCreator_jobs();
+            jobslist = Arrays.asList(jobs);
             System.out.println("Available jobs: ");
-            for (int i = 0; i < jobs.length; i++) {
-                System.out.println(i + ". " + jobs[i]);
+            for (int i = 0; i < jobslist.size(); i++) {
+                System.out.println(i + ". " + jobslist.get(i));
             }
 
             // to send data to the server
@@ -43,23 +50,63 @@ public class Client extends Seeker{
             // is not typed at client
             while (!(str = kb.readLine()).equals("exit")) {
 
-                for (int i = 0; i < jobs.length; i++) {
-                    if (str.equals(jobs[i])) {
-                        str = "Client has picked " + jobs[i];
+                for (int i = 0; i < jobslist.size(); i++) {
+                    if (str.equalsIgnoreCase(jobslist.get(i))) {
+                        str = "Client has picked " + jobslist.get(i);
+                        check = i;
+                        pick = true;
                     }
                 }
+
                 // send to the server
                 dos.writeBytes(str + "\n");
 
                 // receive from the server
                 str1 = br.readLine();
-                if (str1.equals("Accept")) {
-                    setJ(new Job("Fishing"));
-                }else if(str1.equals("Decline")){
-                    //jobs.
+                if (pick && str1.equalsIgnoreCase("Accept")) {
+                    setJ(new Job(jobslist.get(check)));
+                    str = "Client doing job....";
+                    dos.writeBytes(str + "\n");
+                    System.out.println("Job accepted..");
                 }
-
-                System.out.println(str1);
+                if(pick && str1.equalsIgnoreCase("Decline")){
+                    System.out.println("Request Denied");
+                    if(jobslist.size() != 0) {
+                        jobslist.remove(jobslist.get(check));
+                        System.out.println("Available jobs: ");
+                        for (int i = 0; i < jobslist.size(); i++) {
+                            System.out.println(i + ". " + jobslist.get(i));
+                        }
+                        for (int i = 0; i < jobslist.size(); i++) {
+                            if (str.equals(jobslist.get(i))) {
+                                str = "Clients job is " + jobslist.get(i);
+                                check = i;
+                            }
+                        }
+                        str = "You have denied clients request";
+                        dos.writeBytes(str + "\n");
+                    }
+                }
+                if(jobslist.size() == 0){
+                    System.out.println("There are no available jobs");
+                    break;
+                }
+                if(str.equalsIgnoreCase("Done")){
+                    System.out.println("fish");
+                    str = "Client is done with job...";
+                    dos.writeBytes(str + "\n");
+                    pick = false;
+                    if(jobslist.size() != 0) {
+                        jobslist.remove(getJ().getJob());
+                        setJ(new Job("null)"));
+                        System.out.println("Available jobs: ");
+                        for (int i = 0; i < jobslist.size(); i++) {
+                            System.out.println(i + ". " + jobslist.get(i));
+                        }
+                    }
+                    else{break;}
+                }
+                //System.out.println(str1);
             }
 
             // close connection.
@@ -71,70 +118,4 @@ public class Client extends Seeker{
 
         }
     }
-
-
-
-
-
-
-
-
-    /**
-    //Seeker seek  = new Seeker();
-    InputStreamReader reader;
-    BufferedReader read;
-    PrintStream stream;
-    Scanner scan;
-    Socket s;
-    String inputLine;
-    String outputLine;
-
-    public static void main(String[] args) throws Exception {
-        Client c = new Client();
-        c.run();
-    }
-
-    public void run() {
-        try{
-            try {
-                s = new Socket("localhost", 4999);
-                System.out.println("Connected to server!!");
-                reader = new InputStreamReader(s.getInputStream());
-                read = new BufferedReader(reader);
-                scan = new Scanner(s.getInputStream());
-                stream = new PrintStream(s.getOutputStream());
-                stream.println("New Client selecting from jobs");
-                stream.flush();
-                checkStream();
-
-
-                while ((inputLine = read.readLine()) != null) {
-                    //outputLine = kkp.processInput(inputLine);
-                    stream.println(inputLine);
-                    if (outputLine.equals("End"))
-                        s.close();
-                        break;
-                }
-            }
-            finally{
-                s.close();
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
-
-    public void checkStream(){
-        while(true){
-            receive();
-        }
-    }
-
-    public void receive(){
-        if(scan.hasNext()){
-            String message = scan.nextLine();
-            System.out.println(message);
-        }
-    }
-     **/
 }

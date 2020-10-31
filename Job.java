@@ -7,9 +7,6 @@ public class Job {
         this.job = j;
     }
 
-    public Job(String[] j){
-        this.job_types = j;
-    }
 
     public String getJob() {
         return job;

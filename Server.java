@@ -36,9 +36,9 @@ public class Server extends Creator {
             // read from client
             while ((str = br.readLine()) != null) {
                 System.out.println(str);
+
+
                 str1 = kb.readLine();
-
-
                 // send to client
                 ps.println(str1);
             }
