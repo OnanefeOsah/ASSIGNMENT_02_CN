@@ -71,14 +71,17 @@ public class Server {
         }
     }
 
+    //TODO
     private void createOneToOneJobs(){
 
     }
 
+    //TODO
     private void createOneToManyJobs(){
 
     }
 
+    //TODO - not needed
     private void createJobs() {
         //this.createdJobs.add("One-To-One");
         this.createdJobs.add("Fishing");
@@ -199,9 +202,5 @@ public class Server {
         System.out.println("2. Assign Jobs");
         System.out.println("3. Terminate Connection..");
     }
-
-
-
-
 
 }

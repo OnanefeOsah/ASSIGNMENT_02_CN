@@ -159,7 +159,6 @@ public class Client {
 
     }
 
-
     public void send(String chat, int numChoice) throws IOException {
         this.out = new PrintStream(s.getOutputStream());
         chat = chat.concat(this.choiceDelimiter + numChoice);
@@ -226,7 +225,6 @@ public class Client {
          System.out.println("4. Terminate Connection..");
 
     }
-
 
     public String getClientJob() {
         return clientJob;
