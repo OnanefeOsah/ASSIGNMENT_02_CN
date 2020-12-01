@@ -35,7 +35,7 @@ public class Client {
                 System.out.print(">>>");
                 int choice  = scan.nextInt();
                 scan.nextLine();
-                while(choice<1 || choice> 5){
+                while(choice<1 || choice> 4){
                     System.out.print("Wrong input");
                     System.out.print(">>>");
                     choice = scan.nextInt();
