@@ -187,13 +187,32 @@ public class Client {
 
             //response to client case 2,1 from server
             if(this.numChoiceFromServer == 21){
-                System.out.println("You have been assigned the job: " + brokenSentence);
-                setHasJob(true);
+                System.out.println("The job " + brokenSentence + " is available");
+                System.out.println("Do you accept/reject");
+                System.out.println("1. Accept");
+                System.out.println("2. Reject");
+                int secondCaseChoice = scan.nextInt();
+                scan.nextLine();
+                while (secondCaseChoice < 1 || secondCaseChoice > 2) {
+                    System.out.println("Wrong input!!!");
+                    secondCaseChoice = scan.nextInt();
+                    scan.nextLine();
+                }
+                if(secondCaseChoice == 1) {
+                    System.out.println("You've been given the job " + brokenSentence);
+                    setHasJob(true);
+                    setClientJob(brokenSentence);
+                }
+
                 setClientJob(brokenSentence);
             }
 
             if(this.numChoiceFromServer == 22){
                 System.out.println(brokenSentence);
+            }
+
+            if(this.numChoiceFromServer == 9999){
+                System.out.println();
             }
 
         }

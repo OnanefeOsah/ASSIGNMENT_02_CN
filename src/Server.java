@@ -175,8 +175,8 @@ public class Server {
             //client case 3
             if(numChoiceFromServer == 3){
                 String[] delimBrokenSentence = brokenSentence.split(this.delimiter);
-                if(delimBrokenSentence[0].equalsIgnoreCase("done")){
-                    this.createdJobs.remove(delimBrokenSentence[1]);
+                if(brokenSentence.equalsIgnoreCase("done")){
+                    send("I will review the job results. Thank you", 9999);
                 }
             }
 
